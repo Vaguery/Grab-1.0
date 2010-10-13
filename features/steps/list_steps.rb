@@ -4,6 +4,8 @@ end
 
 
 Given /^the Grab program is "([^"]*)"$/ do |program|
+  program.gsub!('\n',"\n")
+  program.gsub!('\t',"\t")
   @grab_program = program
 end
 

@@ -12,16 +12,18 @@ class GrabAnswer
     result = []
     @blueprint.each_line do |line|
       case line
-      when /copy (\d+)/
-        result << copy(data, $1.to_i)
+      when /row (\d+)/
+        which_element = $1.to_i
+        result << row(data, which_element)
+      else
       end
     end
     
     return result
   end
   
-  def copy(data, which)
-    return data[which % data.length]
+  def row(data, which)
+    return data.length > 0 ? data[which % data.length] : nil
   end
   
 end
