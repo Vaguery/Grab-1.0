@@ -84,6 +84,12 @@ describe "GrabExecutable class" do
     it "should return a nil answer if the data is an empty set" do
        GrabExecutable.new("").row([], -4).should == nil
     end
+    
+    describe "row any" do
+      it "should sample one element of the data at random" do
+        [1,2,3].should include GrabExecutable.new("row any").grab([1,2,3])[0]
+      end
+    end
   end
   
   

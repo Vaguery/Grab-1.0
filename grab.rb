@@ -15,6 +15,8 @@ class GrabExecutable
       when /row\s+(\d+)/
         which_element = $1.to_i
         result << row(data, which_element)
+      when /row\s+any/
+        result << data.sample
       else
       end
     end
