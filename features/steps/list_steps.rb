@@ -1,4 +1,4 @@
-Given /^the data source is the list \"(\[.*\])\"$/ do |source_list|
+Given /^the data source is the Array \"(\[.*\])\"$/ do |source_list|
   @source_data = eval(source_list)
 end
 
@@ -15,6 +15,6 @@ When /^I run the Grab program on that data source$/ do
 end
 
 
-Then /^I should receive the list \"(\[.*\])\"$/ do |result|
+Then /^I should receive the Array \"(\[.*\])\"$/ do |result|
   @answer.grab(@source_data).should == eval(result)
 end

@@ -8,6 +8,11 @@ describe "GrabExecutable class" do
   end
   
   describe "#grab" do
+    it "should accept an Array as a data source" do
+      lambda { GrabExecutable.new("foo bar").grab(["foo", "bar"]) }.should_not raise_error ArgumentError
+    end
+    
+    
     it "should raise an error if the data source isn't an Enumerable" do
       lambda { GrabExecutable.new("foo bar").grab("baz") }.should raise_error ArgumentError
     end
@@ -34,6 +39,34 @@ describe "GrabExecutable class" do
       my_answer.grab([1,2,3]).length.should == 2
       my_answer.grab([1,2,3]).should == [2,3]
     end
+    
+    it "should never return nils" do
+      my_answer = GrabExecutable.new("row 1\nrow 2")
+      my_answer.grab([nil, nil]).length.should == 0
+      my_answer.grab([nil, nil]).should == []
+    end
+  end
+  
+  
+  describe "parsing lines" do
+    before(:each) do
+      @data = [2,3,4,5,6,7]
+    end
+    it "should ignore empty lines" do
+      GrabExecutable.new("row 2\n\nrow 3").grab(@data).should == [4,5]
+    end
+    
+    it "should ignore whitespace in a line" do
+      GrabExecutable.new("row   \t  2").grab(@data).should == [4]
+    end
+    
+    it "should ignore garbage lines" do
+      GrabExecutable.new("fiddledeedee").grab(@data).should == []
+    end
+    
+    it "should ignore garbage lines" do
+      GrabExecutable.new("fiddledeedee \nrow 2").grab(@data).should == [4]
+    end
   end
   
   
@@ -52,5 +85,9 @@ describe "GrabExecutable class" do
     it "should return a nil answer if the data is an empty set" do
        GrabExecutable.new("").row([], -4).should == nil
     end
+  end
+  
+  
+  describe "garbage lines" do
   end
 end

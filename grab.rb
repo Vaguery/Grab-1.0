@@ -12,14 +12,14 @@ class GrabExecutable
     result = []
     @blueprint.each_line do |line|
       case line
-      when /row (\d+)/
+      when /row\s+(\d+)/
         which_element = $1.to_i
         result << row(data, which_element)
       else
       end
     end
     
-    return result
+    return result.reject {|i| i.nil?}
   end
   
   def row(data, which)
