@@ -29,3 +29,12 @@ Scenario: grabbing from an empty Array gives an empty answer
   And the Grab program is "row 1\nrow 1\nrow -1221"
   When I run the Grab program on that data source
   Then I should receive the Array "[]"
+
+
+Scenario: grabbing from a tree only produces samples from the root Array
+  Given the data source is the Array "[[1,2], [3,4], [5, [6]]]"
+  And the Grab program is "row 2"
+  When I run the Grab program on that data source
+  Then I should receive the Array "[[5, [6]]]"
+
+

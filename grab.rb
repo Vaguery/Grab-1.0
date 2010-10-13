@@ -7,7 +7,7 @@ class GrabExecutable
   end
   
   def grab(data=[])
-    raise ArgumentError unless data.kind_of?(Enumerable)
+    raise ArgumentError unless data.kind_of?(Array)
     
     result = []
     @blueprint.each_line do |line|

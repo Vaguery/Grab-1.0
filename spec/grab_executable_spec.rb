@@ -12,8 +12,7 @@ describe "GrabExecutable class" do
       lambda { GrabExecutable.new("foo bar").grab(["foo", "bar"]) }.should_not raise_error ArgumentError
     end
     
-    
-    it "should raise an error if the data source isn't an Enumerable" do
+    it "should raise an error if the data source isn't an Array" do
       lambda { GrabExecutable.new("foo bar").grab("baz") }.should raise_error ArgumentError
     end
     
