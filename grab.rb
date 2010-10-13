@@ -1,4 +1,4 @@
-class GrabAnswer
+class GrabExecutable
   
   attr_reader :blueprint
   

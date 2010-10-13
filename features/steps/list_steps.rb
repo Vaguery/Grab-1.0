@@ -11,7 +11,7 @@ end
 
 
 When /^I run the Grab program on that data source$/ do
-  @answer = GrabAnswer.new(@grab_program)
+  @answer = GrabExecutable.new(@grab_program)
 end
 
 
