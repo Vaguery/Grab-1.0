@@ -5,38 +5,39 @@ Feature: Handling items from Array data sources
 
 
 Scenario: 'row' command says 'copy an element from a list'
-  Given the data source is the Array "[2,4,6,8,10]"
-  And the Grab program is "row 2"
-  When I run the Grab program on that data source
-  Then I should receive the Array "[6]"
+  Given the Grab program is "row 2"
+  And the data source is the Array "[2,4,6,8,10]" 
+  And I have bound the Grab executable to that data source 
+  When I run the Grab executable
+  Then the result should be the Array "[6]"
 
 
 Scenario: multiple 'row' commands copy multiple elements from a list
   Given the data source is the Array "[2,4,6,8,10]"
   And the Grab program is "row 2\nrow 3"
   When I run the Grab program on that data source
-  Then I should receive the Array "[6,8]"
+  Then the result should be the Array "[6,8]"
 
 
 Scenario: identical 'row' commands return multiple copies of one item in a list
   Given the data source is the Array "[1,2,3,4,5]"
   And the Grab program is "row 1\nrow 1\nrow 2"
   When I run the Grab program on that data source
-  Then I should receive the Array "[2,2,3]"
+  Then the result should be the Array "[2,2,3]"
 
 
 Scenario: grabbing from an empty Array gives an empty answer
   Given the data source is the Array "[]"
   And the Grab program is "row 1\nrow 1\nrow -1221"
   When I run the Grab program on that data source
-  Then I should receive the Array "[]"
+  Then the result should be the Array "[]"
 
 
 Scenario: grabbing from a tree only produces samples from the root Array
   Given the data source is the Array "[[1,2], [3,4], [5, [6]]]"
   And the Grab program is "row 2"
   When I run the Grab program on that data source
-  Then I should receive the Array "[[5, [6]]]"
+  Then the result should be the Array "[[5, [6]]]"
 
 
 Scenario: grabbing 'row any' samples a row randomly

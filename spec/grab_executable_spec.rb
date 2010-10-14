@@ -5,6 +5,10 @@ describe "GrabExecutable class" do
     it "should accept a string blueprint" do
       GrabExecutable.new("foo bar").blueprint.should == "foo bar"
     end
+    
+    it "should accept an optional data_source" do
+      GrabExecutable.new("foo bar").data_source.should == nil
+    end
   end
   
   
@@ -36,6 +40,12 @@ describe "GrabExecutable class" do
       GrabExecutable.new("foo bar").grab.should == []
     end
     
+    it "should default to a stored data_source, if any" do
+      my_answer = GrabExecutable.new("row 1")
+      my_answer.attach_to_source([1,2,3])
+      my_answer.grab.should == [2]
+    end
+    
     it "should execute the blueprint's first line" do
       data = [1,2]
       my_answer = GrabExecutable.new("row 3")
@@ -46,7 +56,7 @@ describe "GrabExecutable class" do
     it "should execute all the lines in the blueprint" do
       my_answer = GrabExecutable.new("row 1\nrow 2")
       my_answer.should_receive(:row).exactly(2).times
-      my_answer.grab
+      my_answer.grab([1,2])
     end
     
     it "should return the set of all results of those lines" do
@@ -81,6 +91,22 @@ describe "GrabExecutable class" do
     
     it "should ignore garbage lines" do
       GrabExecutable.new("fiddledeedee \nrow 2").grab(@data).should == [4]
+    end
+  end
+  
+  
+  describe "run" do
+    it "should execute :grab and record the result in @result" do
+      grabby = GrabExecutable.new("row 1",[1,2,3])
+      grabby.run
+      grabby.result.should == [2]
+    end
+  end
+  
+  
+  describe "#attach_to_source" do
+    it "should accept an Array" do
+      lambda { GrabExecutable.new("foo").attach_to_source([1,2,3]) }.should_not raise_error
     end
   end
   

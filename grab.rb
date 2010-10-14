@@ -1,14 +1,26 @@
 class GrabExecutable
   
-  attr_reader :blueprint
   @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/)
   
-  def initialize(blueprint)
+  attr_reader :blueprint, :result
+  attr_accessor :data_source
+  
+  
+  def initialize(blueprint, data_source=nil)
     @blueprint = blueprint
+    @data_source = data_source unless data_source.nil?
   end
   
   
-  def grab(data=[])
+  def attach_to_source(data_source)
+    @data_source = data_source
+    return
+  end
+  
+  
+  def grab(data=@data_source)
+    return [] if data.nil?
+    
     raise ArgumentError unless data.kind_of?(Array)
     
     result = []
@@ -24,6 +36,11 @@ class GrabExecutable
     end
     
     return result.reject {|i| i.nil?}
+  end
+  
+  
+  def run
+    @result = grab(@data_source)
   end
   
   
