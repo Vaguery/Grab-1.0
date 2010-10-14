@@ -3,6 +3,7 @@ Feature: Handling items from Array data sources
   As a modeler
   I want a Grab program to include syntax that returns an explicit subset
 
+
 Scenario: 'row' command says 'copy an element from a list'
   Given the data source is the Array "[2,4,6,8,10]"
   And the Grab program is "row 2"

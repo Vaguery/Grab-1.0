@@ -1,10 +1,12 @@
 class GrabExecutable
   
   attr_reader :blueprint
+  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/)
   
   def initialize(blueprint)
     @blueprint = blueprint
   end
+  
   
   def grab(data=[])
     raise ArgumentError unless data.kind_of?(Array)
@@ -24,8 +26,15 @@ class GrabExecutable
     return result.reject {|i| i.nil?}
   end
   
+  
   def row(data, which)
     return data.length > 0 ? data[which % data.length] : nil
   end
   
+  
+  def points
+    valid_lines = (@blueprint.lines.reject {|l| l.strip.empty?}).
+      find_all {|l| l.match(@@recognized_lines)}
+    valid_lines.to_a.length
+  end
 end

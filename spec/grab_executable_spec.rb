@@ -7,6 +7,22 @@ describe "GrabExecutable class" do
     end
   end
   
+  
+  describe "points" do
+    it "should return the number of lines for simple grab programs" do
+      GrabExecutable.new("row 1\nrow 2").points.should == 2
+    end
+    
+    it "should skip blank lines" do
+      GrabExecutable.new("\n\n\nrow 2").points.should == 1
+    end
+    
+    it "should skip garbage lines" do
+      GrabExecutable.new("hhhhhh\nrow 2").points.should == 1
+    end
+    
+  end
+  
   describe "#grab" do
     it "should accept an Array as a data source" do
       lambda { GrabExecutable.new("foo bar").grab(["foo", "bar"]) }.should_not raise_error ArgumentError
@@ -90,9 +106,5 @@ describe "GrabExecutable class" do
         [1,2,3].should include GrabExecutable.new("row any").grab([1,2,3])[0]
       end
     end
-  end
-  
-  
-  describe "garbage lines" do
   end
 end
