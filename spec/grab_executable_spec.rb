@@ -101,6 +101,11 @@ describe "GrabExecutable class" do
       grabby.run
       grabby.result.should == [2]
     end
+    
+    it "should produce an empty array if no data is provided or bound in" do
+      grabby = GrabExecutable.new("row 1")
+      grabby.run.should == []
+    end
   end
   
   
