@@ -59,7 +59,12 @@ class GrabExecutable
   
   
   def row(data, which)
-    return data.length > 0 ? data[which % data.length] : nil
+    if data.length > 0 
+      index = which % data.length
+      data[index]
+    else
+      nil
+    end
   end
   
   
