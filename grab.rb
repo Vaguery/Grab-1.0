@@ -1,6 +1,6 @@
 class GrabExecutable
   
-  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/)
+  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/, /all/)
   
   attr_reader :blueprint, :result
   attr_accessor :data_source
@@ -26,11 +26,13 @@ class GrabExecutable
     result = []
     @blueprint.each_line do |line|
       case line
+      when /all/
+        result += all(data)
       when /row\s+(\d+)/
         which_element = $1.to_i
-        result << row(data, which_element)
+        result += [row(data, which_element)]
       when /row\s+any/
-        result << data.sample
+        result += [data.sample]
       else
       end
     end
@@ -47,6 +49,12 @@ class GrabExecutable
   def row(data, which)
     return data.length > 0 ? data[which % data.length] : nil
   end
+  
+  
+  def all(data)
+    return data
+  end
+  
   
   
   def points

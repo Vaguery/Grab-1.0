@@ -63,6 +63,10 @@ describe "GrabExecutable class" do
       my_answer = GrabExecutable.new("row 1\nrow 2")
       my_answer.grab([1,2,3]).length.should == 2
       my_answer.grab([1,2,3]).should == [2,3]
+      
+      my_answer = GrabExecutable.new("all \nall")
+      my_answer.grab([1,2,3]).should == [1,2,3,1,2,3]
+      
     end
     
     it "should never return nils" do
@@ -81,7 +85,7 @@ describe "GrabExecutable class" do
       GrabExecutable.new("row 2\n\nrow 3").grab(@data).should == [4,5]
     end
     
-    it "should ignore whitespace in a line" do
+    it "should ignore central whitespace in a line" do
       GrabExecutable.new("row   \t  2").grab(@data).should == [4]
     end
     
@@ -91,6 +95,31 @@ describe "GrabExecutable class" do
     
     it "should ignore garbage lines" do
       GrabExecutable.new("fiddledeedee \nrow 2").grab(@data).should == [4]
+    end
+    
+    it "should recognize 'row \d' instructions" do
+      GrabExecutable.new("row").grab(@data).should == []
+      GrabExecutable.new("row 2").grab(@data).should_not == []
+    end
+    
+    it "should recognize 'row any' instructions" do
+      GrabExecutable.new("row foo").grab(@data).should == []
+      GrabExecutable.new("row any").grab(@data).should_not == []
+    end
+    
+    it "should recognize 'all' instructions" do
+      GrabExecutable.new("all").grab(@data).should == [2,3,4,5,6,7]
+    end
+    
+    it "should ignore garbage following a recognized instruction on a line" do
+      GrabExecutable.new("all foo").grab(@data).should == [2,3,4,5,6,7]
+      GrabExecutable.new("row 1 bar").grab(@data).should == [3]
+      GrabExecutable.new("row any baz").grab(@data).length.should == 1
+    end
+    
+    it "should ignore following instructions on one line" do
+      pending "Broken"
+      GrabExecutable.new("row 2 all").grab(@data).should == [4]
     end
   end
   
@@ -112,6 +141,12 @@ describe "GrabExecutable class" do
   describe "#attach_to_source" do
     it "should accept an Array" do
       lambda { GrabExecutable.new("foo").attach_to_source([1,2,3]) }.should_not raise_error
+    end
+  end
+  
+  describe "all instruction" do
+    it "should copy all elements of the data_source over to the working result" do
+      GrabExecutable.new("foo").all([2,3,4,5,6,7]).should == [2,3,4,5,6,7]
     end
   end
   

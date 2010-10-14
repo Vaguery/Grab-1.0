@@ -37,7 +37,7 @@ end
 
 
 Then /^the result should be the Array \"(\[.*\])\"$/ do |result|
-  @my_executable.result == eval(result)
+  @my_executable.result.should == eval(result)
 end
 
 

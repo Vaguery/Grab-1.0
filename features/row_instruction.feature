@@ -1,7 +1,7 @@
-Feature: Handling items from Array data sources
-  In order to select items from a data source that's an Array object
+Feature: 'row' instruction
+  In order to select individual items from a data source
   As a modeler
-  I want a Grab program to include syntax that returns an explicit subset
+  I want a Grab program have an instruction to include one row (or item) of data
 
 
 Scenario: 'row' command says 'copy an element from a list'
@@ -13,30 +13,34 @@ Scenario: 'row' command says 'copy an element from a list'
 
 
 Scenario: multiple 'row' commands copy multiple elements from a list
-  Given the data source is the Array "[2,4,6,8,10]"
-  And the Grab program is "row 2\nrow 3"
-  When I run the Grab program on that data source
+  Given the Grab program is "row 2\nrow 3"
+  And the data source is the Array "[2,4,6,8,10]"
+  And I have bound the Grab executable to that data source
+  When I run the Grab executable
   Then the result should be the Array "[6,8]"
 
 
 Scenario: identical 'row' commands return multiple copies of one item in a list
-  Given the data source is the Array "[1,2,3,4,5]"
-  And the Grab program is "row 1\nrow 1\nrow 2"
-  When I run the Grab program on that data source
+  Given the Grab program is "row 1\nrow 1\nrow 2"
+  And the data source is the Array "[1,2,3,4,5]"
+  And I have bound the Grab executable to that data source
+  When I run the Grab executable
   Then the result should be the Array "[2,2,3]"
 
 
 Scenario: grabbing from an empty Array gives an empty answer
-  Given the data source is the Array "[]"
-  And the Grab program is "row 1\nrow 1\nrow -1221"
-  When I run the Grab program on that data source
+  Given the Grab program is "row 1\nrow 1\nrow -1221"
+  And the data source is the Array "[]"
+  And I have bound the Grab executable to that data source
+  When I run the Grab executable
   Then the result should be the Array "[]"
 
 
 Scenario: grabbing from a tree only produces samples from the root Array
-  Given the data source is the Array "[[1,2], [3,4], [5, [6]]]"
-  And the Grab program is "row 2"
-  When I run the Grab program on that data source
+  Given the Grab program is "row 2"
+  And the data source is the Array "[[1,2], [3,4], [5, [6]]]"
+  And I have bound the Grab executable to that data source
+  When I run the Grab executable
   Then the result should be the Array "[[5, [6]]]"
 
 
