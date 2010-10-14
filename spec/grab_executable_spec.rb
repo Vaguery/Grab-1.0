@@ -118,7 +118,6 @@ describe "GrabExecutable class" do
     end
     
     it "should ignore following instructions on one line" do
-      pending "Broken"
       GrabExecutable.new("row 2 all").grab(@data).should == [4]
     end
   end

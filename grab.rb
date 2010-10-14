@@ -1,6 +1,9 @@
+require 'strscan'
+
+
 class GrabExecutable
   
-  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/, /all/)
+  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/, /^all/)
   
   attr_reader :blueprint, :result
   attr_accessor :data_source
@@ -25,8 +28,8 @@ class GrabExecutable
     
     result = []
     @blueprint.each_line do |line|
-      case line
-      when /all/
+      case line.strip
+      when /^all/
         result += all(data)
       when /row\s+(\d+)/
         which_element = $1.to_i
