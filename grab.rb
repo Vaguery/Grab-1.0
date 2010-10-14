@@ -3,7 +3,7 @@ require 'strscan'
 
 class GrabExecutable
   
-  @@recognized_lines = Regexp.union(/row\s+(\d+)/,/row\s+any/, /^all/)
+  @@recognized_lines = Regexp.union(/^row\s+(\d+)/,/^row\s+any/, /^all/, /^not\s+row\s+(\d+)/)
   
   attr_reader :blueprint, :result
   attr_accessor :data_source
@@ -31,11 +31,20 @@ class GrabExecutable
       case line.strip
       when /^all/
         result += all(data)
-      when /row\s+(\d+)/
+      when /^row\s+(-?\d+)/
         which_element = $1.to_i
         result += [row(data, which_element)]
-      when /row\s+any/
+      when /^not\s+row\s+(-?\d+)/
+        which_element = $1.to_i
+        remove_this = row(data, which_element)
+        result = result.reject {|item| item == remove_this}
+      when /^row\s+any/
         result += [data.sample]
+      when /^not\s+row\s+any/
+        remove_this = data.sample
+        result = result.reject {|item| item == remove_this}
+      when /^not\s+all/
+        result = result.reject {|item| data.include?(item)}
       else
       end
     end

@@ -172,4 +172,28 @@ describe "GrabExecutable class" do
       end
     end
   end
+  
+  
+  describe "not row \d" do
+    it "should remove all copies of that particular item from the intermediate result" do
+      GrabExecutable.new("all\nnot row 2", [2,3,4,4,5,6,7]).run.should == [2, 3, 5, 6, 7]
+      GrabExecutable.new("all\nnot row -1", [2,3,4,5,6,7,7,7]).run.should == [2, 3, 4, 5, 6]
+      GrabExecutable.new("all\nnot row 15", [2,3,4,5,6,7,2,2]).run.should == [3, 4, 5, 6, 7]
+    end
+  end
+  
+  
+  describe "not row any" do
+    it "should remove all copies of a random item from the intermediate result" do
+      GrabExecutable.new("all\nnot row any", [2,2,2,2,2,2]).run.should == []
+      GrabExecutable.new("all\nnot row any", [2,2,2,3,3,3]).run.length.should == 3
+    end
+  end
+  
+  describe "not all" do
+    it "should remove everything in the dataset from the intermediate result" do
+      GrabExecutable.new("all\nnot all", [1,2,3,4,5]).run.should == []
+    end
+  end
+  
 end

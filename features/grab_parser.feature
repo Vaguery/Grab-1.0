@@ -23,3 +23,10 @@ Feature: Grab parser
     And I have bound the Grab executable to that data source 
     When I run the Grab executable
     Then the result should be the Array "[4]"
+
+  Scenario: preceding non-whitespace blocks recognition
+    Given the Grab program is "row row 1"
+    And the data source is the Array "[2,4]" 
+    And I have bound the Grab executable to that data source 
+    When I run the Grab executable
+    Then the result should be the Array "[]"
