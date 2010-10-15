@@ -4,11 +4,14 @@
 # the Grab interpreter splits scripts into lines;
 # any line that isn't an obvious instruction is ignored;
 # all leading and trailing whitespace is stripped from every line;
-# all characters on a line after an instruction has been recognized is ignored;
-# instructions must be the first non-whitespace position of a line or the line is ignored
+# all characters on a line after an instruction has been recognized are ignored;
+# instructions must be the first non-whitespace item on a line
 
 # running the script makes cumulative changes to a 'working subset' of the dataset,
 #   which is a set of references to records in their canonical order
+
+# in this example, I've used the convention of '#' as a comment
+# the expected result of a script line on the local reference set is shown after '=>'
 
 # 'all' appends a reference to every record in the attached dataset, in order
 all     => [0,1,2,3,4,5,6,7,8]
