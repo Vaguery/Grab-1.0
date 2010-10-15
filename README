@@ -1,0 +1,51 @@
+# assume that we'll be attaching to a dataset with 9 records,
+# and that the 'records' in our dataset are [0,1,2,3,4,5,6,7,8]
+
+# the Grab interpreter splits scripts into lines;
+# any line that isn't an obvious instruction is ignored;
+# all leading and trailing whitespace is stripped from every line;
+# all characters on a line after an instruction has been recognized is ignored;
+# instructions must be the first non-whitespace position of a line or the line is ignored
+
+# running the script makes cumulative changes to a 'working subset' of the dataset,
+#   which is a set of references to records in their canonical order
+
+# 'all' appends a reference to every record in the attached dataset, in order
+all     => [0,1,2,3,4,5,6,7,8]
+
+# 'any' appends a reference to any one uniformly-sampled record
+#   for example, 2 
+any     => [0,1,2,3,4,5,6,7,8,2]
+
+# a bare integer adds a reference to the record in that position in the dataset
+#  NOTE: Grab is 0-based
+1       => [0,1,2,3,4,5,6,7,8,2,1]
+
+# integers are reduced modulo the number of records
+#   for example, (52 % 9) = a reference to the record in position 7 of dataset
+52      => [0,1,2,3,4,5,6,7,8,2,1,7]
+
+# negative integers are also brought into range via modulo
+#   for example, (-21 % 9) = a reference to the record in position 6 of dataset
+-21     => [0,1,2,3,4,5,6,7,8,2,1,7,6]
+
+# 'not \d' removes all references to records that are in a given position in the dataset
+not 7   => [0,1,2,3,4,5,6,8,2,1,6]
+
+# as before, the number is returned modulo the number of records in the original dataset
+#   for example, (-7 % 9) = reference to record in position 2
+not -7   => [0,1,3,4,5,6,8,1,6]
+
+# 'not any' removes all local references to a random element of the attached dataset
+#   for example, 6
+not any  => [0,1,3,4,5,8,1]
+
+# 'not all' removes all references to any record in the dataset
+not all  => []
+
+# the working subset is modified by each instruction in turn
+any      => [5]
+any      => [5,3]
+all      => [5,3,0,1,2,3,4,5,6,7,8]
+all      => [5,3,0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8]
+not 5    => [3,0,1,2,3,4,6,7,8,0,1,2,3,4,6,7,8]
