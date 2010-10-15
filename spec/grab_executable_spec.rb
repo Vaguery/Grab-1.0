@@ -107,8 +107,8 @@ describe "GrabExecutable class" do
     end
     
     it "should recognize 'row' instructions" do
-      GrabExecutable.new("").grab(@data).should == []
-      GrabExecutable.new("2").grab(@data).should_not == []
+      GrabExecutable.new("row 2").grab(@data).should == [4]
+      GrabExecutable.new("2").grab(@data).should == [4]
     end
     
     it "should recognize 'any' instructions" do

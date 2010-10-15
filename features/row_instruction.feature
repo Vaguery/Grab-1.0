@@ -5,11 +5,19 @@ Feature: 'row' instruction
 
 
 Scenario: 'row' command says 'copy an element from a list'
-  Given the Grab program is " 2"
+  Given the Grab program is "row 2"
   And the data source is the Array "[2,4,6,8,10]" 
   And I have bound the Grab executable to that data source 
   When I run the Grab executable
   Then the result should be the Array "[6]"
+
+
+Scenario: 'row' is optional
+  Given the Grab program is "2\n row 2"
+  And the data source is the Array "[2,4,6,8,10]" 
+  And I have bound the Grab executable to that data source 
+  When I run the Grab executable
+  Then the result should be the Array "[6,6]"
 
 
 Scenario: multiple 'row' commands copy multiple elements from a list

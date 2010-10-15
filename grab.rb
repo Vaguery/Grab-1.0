@@ -29,8 +29,8 @@ class GrabExecutable
       case line.strip
       when /^all/
         result += connection.all
-      when /^(-?\d+)/
-        which_element = $1.to_i
+      when /^(row\s+)?(-?\d+)/
+        which_element = $2.to_i
         result << connection.row(which_element)
       when /^not\s+(-?\d+)/
         which_element = $1.to_i
