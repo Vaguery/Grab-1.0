@@ -10,6 +10,10 @@ Given /^the Grab program is "([^"]*)"$/ do |program|
   @my_executable = GrabExecutable.new(@grab_program)
 end
 
+Given /^the data source is the csv file "([^"]*)"$/ do |source_item|
+  @source_data = eval(source_item)
+end
+
 
 When /^I run the Grab program on that data source$/ do
   @my_executable.grab(@source_data)
@@ -49,4 +53,9 @@ end
 
 Then /^the number of points in the Grab program should be (\d+)$/ do |pts|
   GrabExecutable.new(@grab_program).points.should == pts.to_i
+end
+
+
+Then /^the headers should be "([^"]*)"$/ do |header_array|
+  @my_executable.data_connection.headers.should == eval(header_array)
 end

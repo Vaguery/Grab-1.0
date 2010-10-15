@@ -6,7 +6,7 @@ Feature: Attach to a data source
   
   Scenario: bind to an Array source
     Given the data source is the Array "['a','b','c']"
-    And the Grab program is "row 2"
+    And the Grab program is "2"
     When I bind the Grab program to that data source
     And I run the Grab executable
     Then the result should be the Array "['c']"

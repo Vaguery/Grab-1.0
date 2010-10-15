@@ -4,21 +4,21 @@ Feature: Not modifier
   I want a boolean NOT operation to apply to some instructions
 
   Scenario: not row [number]
-    Given the Grab program is "all\nnot row 3\nnot row 1"
+    Given the Grab program is "all\nnot  3\nnot  1"
     And the data source is the Array "[2,4,6,8,10]"
     And I have bound the Grab executable to that data source
     When I run the Grab executable
     Then the result should be the Array "[2,6,10]"
 
   Scenario: repeated not row [number]
-    Given the Grab program is "all\nnot row 3\nnot row 3"
+    Given the Grab program is "all\nnot 3\nnot  3"
     And the data source is the Array "[2,4,6,8,10]"
     And I have bound the Grab executable to that data source
     When I run the Grab executable
     Then the result should be the Array "[2, 4, 6, 10]"
 
   Scenario: "not row any"
-    Given the Grab program is "row 0 \n row 1 \n not row any"
+    Given the Grab program is " 0 \n  1 \n not any"
     And the data source is the Array "[888, 888]"
     And I have bound the Grab executable to that data source
     When I run the Grab executable
